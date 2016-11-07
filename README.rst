@@ -13,9 +13,9 @@ Installation
 
 You can install, upgrade, uninstall ``pep8-naming`` with these commands::
 
-  $ pip install pep8-naming
-  $ pip install --upgrade pep8-naming
-  $ pip uninstall pep8-naming
+  $ pip install pi-naming
+  $ pip install --upgrade pi-naming
+  $ pip uninstall pi-naming
 
 
 Plugin for Flake8
@@ -45,15 +45,6 @@ These error codes are emitted:
 | N805 | first argument of a method should be named 'self'     |
 +------+-------------------------------------------------------+
 | N806 | variable in function should be lowercase              |
-+------+-------------------------------------------------------+
-+------+-------------------------------------------------------+
-| N811 | constant imported as non constant                     |
-+------+-------------------------------------------------------+
-| N812 | lowercase imported as non lowercase                   |
-+------+-------------------------------------------------------+
-| N813 | camelcase imported as lowercase                       |
-+------+-------------------------------------------------------+
-| N814 | camelcase imported as constant                        |
 +------+-------------------------------------------------------+
 
 
