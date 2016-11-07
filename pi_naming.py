@@ -192,25 +192,25 @@ class ClassNameCheck(BaseASTCheck):
             yield self.err(node, 'N801')
 
 
-# class FunctionNameCheck(BaseASTCheck):
-#     """
-#     Function names should be lowercase, with words separated by underscores
-#     as necessary to improve readability.
-#     Functions *not* beeing methods '__' in front and back are not allowed.
-#
-#     mixedCase is allowed only in contexts where that's already the
-#     prevailing style (e.g. threading.py), to retain backwards compatibility.
-#     """
-#     check = LOWERCASE_REGEX.match
-#     N802 = "function name should be lowercase pi"
-#     def visit_functiondef(self, node, parents, ignore=None):
-#         function_type = getattr(node, 'function_type', 'function')
-#         name = node.name
-#         if ignore and name in ignore:
-#             return
-#         if ((function_type == 'function' and '__' in (name[:2], name[-2:])) or
-#                 not self.check(name)):
-#             yield self.err(node, 'N802')
+class FunctionNameCheck(BaseASTCheck):
+    """
+    Function names should be lowercase, with words separated by underscores
+    as necessary to improve readability.
+    Functions *not* beeing methods '__' in front and back are not allowed.
+
+    mixedCase is allowed only in contexts where that's already the
+    prevailing style (e.g. threading.py), to retain backwards compatibility.
+    """
+    check = LOWERCASE_REGEX.match
+    N802 = "function name should be lowercase pi"
+    def visit_functiondef(self, node, parents, ignore=None):
+        function_type = getattr(node, 'function_type', 'function')
+        name = node.name
+        if ignore and name in ignore:
+            return
+        if ((function_type == 'function' and '__' in (name[:2], name[-2:])) or
+                not self.check(name)):
+            yield self.err(node, 'N802')
 
 
 class FunctionNameCheckPI(BaseASTCheck):
@@ -233,51 +233,51 @@ class FunctionNameCheckPI(BaseASTCheck):
                 not self.check(name)):
             yield self.err(node, 'N808')
 
-# class FunctionArgNamesCheck(BaseASTCheck):
-#     """
-#     The argument names of a function should be lowercase, with words separated
-#     by underscores.
-#
-#     A classmethod should have 'cls' as first argument.
-#     A method should have 'self' as first argument.
-#     """
-#     check = LOWERCASE_REGEX.match
-#     N803 = "argument name should be lowercase"
-#     N804 = "first argument of a classmethod should be named 'cls'"
-#     N805 = "first argument of a method should be named 'self'"
-#
-#     def visit_functiondef(self, node, parents, ignore=None):
-#
-#         def arg_name(arg):
-#             return getattr(arg, 'arg', arg)
-#
-#         kwarg = arg_name(node.args.kwarg)
-#         if kwarg is not None:
-#             if not self.check(kwarg):
-#                 yield self.err(node, 'N803')
-#                 return
-#
-#         vararg = arg_name(node.args.vararg)
-#         if vararg is not None:
-#             if not self.check(vararg):
-#                 yield self.err(node, 'N803')
-#                 return
-#
-#         arg_names = get_arg_names(node)
-#         if not arg_names:
-#             return
-#         function_type = getattr(node, 'function_type', 'function')
-#
-#         if function_type == 'method':
-#             if arg_names[0] != 'self':
-#                 yield self.err(node, 'N805')
-#         elif function_type == 'classmethod':
-#             if arg_names[0] != 'cls':
-#                 yield self.err(node, 'N804')
-#         for arg in arg_names:
-#             if not self.check(arg):
-#                 yield self.err(node, 'N803')
-#                 return
+class FunctionArgNamesCheck(BaseASTCheck):
+    """
+    The argument names of a function should be lowercase, with words separated
+    by underscores.
+
+    A classmethod should have 'cls' as first argument.
+    A method should have 'self' as first argument.
+    """
+    check = LOWERCASE_REGEX.match
+    N803 = "argument name should be lowercase"
+    N804 = "first argument of a classmethod should be named 'cls'"
+    N805 = "first argument of a method should be named 'self'"
+
+    def visit_functiondef(self, node, parents, ignore=None):
+
+        def arg_name(arg):
+            return getattr(arg, 'arg', arg)
+
+        kwarg = arg_name(node.args.kwarg)
+        if kwarg is not None:
+            if not self.check(kwarg):
+                yield self.err(node, 'N803')
+                return
+
+        vararg = arg_name(node.args.vararg)
+        if vararg is not None:
+            if not self.check(vararg):
+                yield self.err(node, 'N803')
+                return
+
+        arg_names = get_arg_names(node)
+        if not arg_names:
+            return
+        function_type = getattr(node, 'function_type', 'function')
+
+        if function_type == 'method':
+            if arg_names[0] != 'self':
+                yield self.err(node, 'N805')
+        elif function_type == 'classmethod':
+            if arg_names[0] != 'cls':
+                yield self.err(node, 'N804')
+        for arg in arg_names:
+            if not self.check(arg):
+                yield self.err(node, 'N803')
+                return
 
 
 class FunctionArgNamesCheckPI(BaseASTCheck):
@@ -354,15 +354,3 @@ class VariablesInFunctionCheck(BaseASTCheck):
                         if node.value.func.id == 'namedtuple':
                             return
                 yield self.err(target, 'N806')
-
-
-class VariablesInFunctionCheckPI(BaseASTCheck):
-    """
-    Local variables in functions should be lowercase
-    """
-    check = LOWERCASE_REGEX.match
-    N806 = "variable in function should be lowercase(pi)"
-
-
-    def visit_total_lines(self, node, parents, ignore=None):
-        print "***********"
